@@ -1,45 +1,50 @@
+#!venv/bin/python
 """ TODO: Put something meaningful"""
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
 api = Api(app)
+
 parser = reqparse.RequestParser()
+# For the student resource
 parser.add_argument("name")
 parser.add_argument("age")
 parser.add_argument("spec")
 
-STUDENTS = {
-    '1': {'name': 'Mark', 'age': 23, 'spec': 'math'},
-    '2': {'name': 'Jane', 'age': 20, 'spec': 'biology'},
-    '3': {'name': 'Peter', 'age': 21, 'spec': 'history'},
-    '4': {'name': 'Kate', 'age': 22, 'spec': 'science'},
-}
+# For the code resource
+parser.add_argument("code")
+parser.add_argument("test")
+
+CODE = {}
 
 
 class HelloWorld(Resource):
+    """Returns hello world"""
+
     def get(self):
         return {'noma': 'tupu'}
 
 
-class StudentsList(Resource):
+class EvalCode(Resource):
+    """Runs code and returns the result"""
+
     def get(self):
-        return STUDENTS
+        return CODE
 
     def post(self):
         args = parser.parse_args()
-        student_id = int(max(STUDENTS.keys())) + 1
-        student_id = '%i' % student_id
-        STUDENTS[student_id] = {
-            "name": args["name"],
-            "age": args["age"],
-            "spec": args["spec"],
+        CODE = {
+            "code": args["code"],
+            "test": args["test"]
         }
-        return STUDENTS[student_id], 201
+        eval(CODE["code"])
+        print(CODE)
+        return CODE, 201
 
 
 api.add_resource(HelloWorld, '/')
-api.add_resource(StudentsList, '/students/')
+api.add_resource(EvalCode, "/code/")
 
 if __name__ == '__main__':
     app.run(debug=True)
