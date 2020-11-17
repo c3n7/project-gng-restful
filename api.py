@@ -10,10 +10,6 @@ app = Flask(__name__)
 api = Api(app)
 
 parser = reqparse.RequestParser()
-# For the student resource
-parser.add_argument("name")
-parser.add_argument("age")
-parser.add_argument("spec")
 
 # For the code resource
 parser.add_argument("code")
@@ -61,8 +57,7 @@ class EvalCode(Resource):
         os.remove(".report.json")
 
         # Return the goodies
-        print(RESULT)
-        print(CODE)
+        print(json.dumps(RESULT, indent=1))
         return RESULT, 201
 
 
