@@ -1,5 +1,8 @@
 #!venv/bin/python
 """ TODO: Put something meaningful"""
+import os
+import json
+import shutil
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 
@@ -38,9 +41,29 @@ class EvalCode(Resource):
             "code": args["code"],
             "test": args["test"]
         }
-        eval(CODE["code"])
+
+        # Write the code file to disk
+        os.mkdir("tmp")
+        with open("tmp/calculate.py", 'w') as f:
+            f.write(CODE["code"])
+
+        with open("tmp/test_calculate.py", 'w') as f:
+            f.write(CODE["test"])
+
+        os.system("py.test --json-report")
+        RESULT = {}
+
+        with open(".report.json") as f:
+            RESULT = json.load(f)
+
+        # A bit of clean up
+        shutil.rmtree("tmp")
+        os.remove(".report.json")
+
+        # Return the goodies
+        print(RESULT)
         print(CODE)
-        return CODE, 201
+        return RESULT, 201
 
 
 api.add_resource(HelloWorld, '/')
