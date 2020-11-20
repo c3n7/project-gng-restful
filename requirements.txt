@@ -1,2 +1,4 @@
 Flask==1.1.2
 Flask-RESTful==0.3.8
+pytest-json-report==1.2.4
+pytest-metadata==1.10.0
