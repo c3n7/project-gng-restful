@@ -40,10 +40,10 @@ class EvalCode(Resource):
 
         # Write the code file to disk
         os.mkdir("tmp")
-        with open("tmp/calculate.py", 'w') as f:
+        with open("tmp/user_code.py", 'w') as f:
             f.write(CODE["code"])
 
-        with open("tmp/test_calculate.py", 'w') as f:
+        with open("tmp/test_code.py", 'w') as f:
             f.write(CODE["test"])
 
         os.system("py.test --json-report")
