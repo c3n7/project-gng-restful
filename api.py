@@ -22,7 +22,7 @@ class HelloWorld(Resource):
     """Returns hello world"""
 
     def get(self):
-        return {'noma': 'tupu'}
+        return {'message': 'hello world'}
 
 
 class EvalCode(Resource):
