@@ -2,3 +2,4 @@ Flask
 Flask-RESTful
 pytest-json-report
 pytest-metadata
+python-dotenv
